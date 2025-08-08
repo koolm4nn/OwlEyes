@@ -1,7 +1,7 @@
 "use client";
 
 import { AddBankForm } from "@/components/AddBankForm";
-import { BanksTable } from "@/components/Tables/BanksTable";
+import { BanksTable } from "@/components/Tables/BanksTable/BanksTable";
 import { useBanks } from "@/hooks/useBank";
 
 /**
