@@ -1,5 +1,13 @@
-export const testEnvironment = "jsdom";
-export const setupFilesAfterEnv = ["C:/Users/mar_k/Documents/Web/NextJs/test-app/jest.setup.ts"];
-export const moduleNameMapper = {
-    "^@/(.*)$": "C:/Users/mar_k/Documents/Web/NextJs/test-app/src/$1"
+// jest.config.js
+const nextJest = require("next/jest");
+
+const createJestConfig = nextJest({
+  dir: "./",
+});
+
+const customJestConfig = {
+  setupFilesAfterEnv: ["C:/Users/mar_k/Documents/Web/NextJs/test-app/jest.setup.ts"],
+  testEnvironment: "jsdom",
 };
+
+module.exports = createJestConfig(customJestConfig);
