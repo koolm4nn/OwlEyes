@@ -2,6 +2,9 @@
 
 For app 'name-to-be-chosen'. 
 
+### Testing status badge
+TODO: add
+
 ### Database
 Finance data is accessed using a sqlite database. On disk, the database is encypted using AES-256-GCM. When a database is selected, database is decrypted and loaded into in-memory sqlite instance. On shutdown or error, the in-memory database is saved to disk. 
 better-sqlite3 is used as a wrapper. 
