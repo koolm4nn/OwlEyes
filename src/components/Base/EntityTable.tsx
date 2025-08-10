@@ -31,17 +31,22 @@ interface EntityTableProps<T> {
  */
 export function EntityTable<T>({data, columns}: EntityTableProps<T>){
     return (
-        <table>
-            <thead>
+        <table className="min-w-full border border-gray-300 border-collapse rounded-lg overflow-hidden">
+            <thead className="bg-gray-400">
                 <tr>
                     {columns.map((c, i) => (
-                        <th key={i}>{c.label}</th>
+                        <th 
+                        key={i}
+                        className="px-4 py-2 text-left font-semibold text-gray-700 border-b border-gray-300"
+                        >{c.label}</th>
                     ))}
                 </tr>
             </thead>
             <tbody>
                 {data.map((item, rowIndex) => (
-                    <tr key={rowIndex}>
+                    <tr key={rowIndex}
+                        className={" hover:bg-gray-900 text-gray-800 " + (rowIndex % 2 == 0? "bg-white" : "bg-gray-300")}
+                    >
                         {columns.map((c, colIndex) => (
                             <td key={colIndex}>{c.render(item)}</td>
                         ))}

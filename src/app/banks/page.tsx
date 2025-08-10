@@ -15,12 +15,14 @@ export default function Banks(){
     if(error) return <p>Error Loading Banks</p>
 
     return (
-        <div className="flex gap-8 p-6">
-            <div className="w=1/2 border-r pr-4">
-                <BanksTable banks={banks} />
-            </div>
-            <div className="w=1/2 pl-4">
-                <AddBankForm />
+        <div className="flex justify-center px-12 py-8">
+            <div className="flex w-full max-w-6xl gap-8">
+                <div className="basis-[60%] border-r pr-6">
+                    <BanksTable banks={banks} />
+                </div>
+                <div className="basis-[40%] pl-6">
+                    <AddBankForm />
+                </div>
             </div>
         </div>
     )
