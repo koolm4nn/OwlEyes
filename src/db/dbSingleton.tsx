@@ -6,8 +6,8 @@ let dbInstance: Database.Database | null = null;
 const encryptedPath = path.join(process.cwd(), "db.sqlite");
 
 export function getDb(): Database.Database {
-    console.log("CWD: ");
-    console.log(process.cwd());
+    //console.log("CWD: ");
+    //console.log(process.cwd());
     if(!dbInstance){
         dbInstance = loadEncryptedDatabase(encryptedPath);
     };
