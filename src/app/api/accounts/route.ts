@@ -29,3 +29,42 @@ export async function GET(): Promise<NextResponse>{
         return NextResponse.json({error: "Internal Server Error: Failed to retrieve accounts"}, {status: 500});
     }
 }
+
+
+/**
+ * POST /api/accounts
+ * 
+ * Creates a new accounts.
+ * 
+ * @param req Request including a JSON body with a 'name' and 'bankId' field
+ * @returns {Promise<NextResponse>}
+ *      200 OK with the ID of the created account
+ *      400 on validation error
+ *      500 on server error
+ */
+export async function POST(req: Request): Promise<NextResponse<{insertedId?: number, error?: string}>>{
+    try{
+        const body = await req.json();
+        const { name } = body;
+        const { bankId } = body;
+
+        if(!name || typeof name !== "string"){
+            return NextResponse.json({
+                error: "Invalid or missing 'name' field: " + name
+            }, {status: 400});
+        }
+
+        if(!bankId || typeof bankId !== "number"){
+            return NextResponse.json({
+                error: "Invalid or missing id of bank field: " + bankId
+            }, {status: 400});
+        }
+
+        const result = accountService.create(name, bankId);
+
+        return NextResponse.json({ insertedId: result})
+    } catch(err){
+        console.error("POST account error: " + err);
+        return NextResponse.json({error: "Internal Server Error"}, {status: 500});
+    }
+}
