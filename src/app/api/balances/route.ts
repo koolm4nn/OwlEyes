@@ -29,3 +29,41 @@ export async function GET(): Promise<NextResponse>{
         return NextResponse.json({error: "Internal Server Error: Failed to retrieve balances"}, {status: 500});
     }
 }
+
+/**
+ * POST /api/balances
+ * 
+ * Creates a new balance.
+ * 
+ * @param req Request including a JSON body with a 'amount' and 'accountId' field
+ * @returns {Promise<NextResponse>}
+ *      200 OK with the ID of the created balance
+ *      400 on validation error
+ *      500 on server error
+ */
+export async function POST(req: Request): Promise<NextResponse<{insertedId?: number, error?: string}>>{
+    try{
+        const body = await req.json();
+        const { amount: amount } = body;
+        const { accountId: accountId } = body;
+
+        if(!amount || typeof amount !== "number"){
+            return NextResponse.json({
+                error: "Invalid or missing 'amount' field: " + amount
+            }, {status: 400});
+        }
+
+        if(!accountId || typeof accountId !== "number"){
+            return NextResponse.json({
+                error: "Invalid or missing id of account field: " + accountId
+            }, {status: 400});
+        }
+
+        const result = balanceService.create(amount, accountId);
+
+        return NextResponse.json({ insertedId: result})
+    } catch(err){
+        console.error("POST balance error: " + err);
+        return NextResponse.json({error: "Internal Server Error"}, {status: 500});
+    }
+}
