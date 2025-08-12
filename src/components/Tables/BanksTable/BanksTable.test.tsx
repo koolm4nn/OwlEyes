@@ -18,9 +18,10 @@ describe("BanksTable", () => {
         expect(table).toBeInTheDocument();
 
         const headers = screen.getAllByRole("columnheader"); // Get headers and compare
-        expect(headers).toHaveLength(2);
+        expect(headers).toHaveLength(3);
         expect(headers[0]).toHaveTextContent("ID");
         expect(headers[1]).toHaveTextContent("Name");
+        expect(headers[2]).toHaveTextContent("");
     });
 
     /**
