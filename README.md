@@ -28,3 +28,7 @@ better-sqlite3 is used as the SQLite driver/wrapper.
 ### Input Validation
 - Zod (type, required fields, min/max length, ..)
 - validate.js (sanitizing)
+
+
+## Roadmap
+- Database Fragmentation (vacuum)

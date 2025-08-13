@@ -29,10 +29,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <QueryProvider>
-          <NavBar />
-          {children}
-        </QueryProvider>
+        <div className="flex">
+          <NavBar/>
+          
+          <QueryProvider>
+            <main className="flex-1 p-6">
+              {children}
+            </main>
+          </QueryProvider>
+        </div>
       </body>
     </html>
   );
