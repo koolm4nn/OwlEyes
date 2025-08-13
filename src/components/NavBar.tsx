@@ -15,22 +15,23 @@ export default function NavBar () {
     ];
 
 
-    return <nav className='font-mono h-screen w-48 p-4 bg-yellow-400'>
+    return <nav className='fixed left-0 top-0 h-full w-48 p-4 font-mono bg-blue-900'>
         <ul className='flex flex-col gap-4' >
-            {links.map(({href, label}) => (
-                <li 
-                    key={href}
-                    className={`px-2 py-1 rounded ${
-                        pathName === href
-                        ? "bg-blue-500 text-white" 
-                        : "bg-red-500 hover:bg-red-600"
-                    }`}
-                >
-                    <a href={href}>
-                        {label}
-                    </a>
+            {links.map(({href, label}) => {
+                const isActive = pathName === href;
+                return (
+                <li key={href}>
+                    {isActive? (
+                        <span className='block py-2 px-4 no-underline rounded-md nav-link-active' aria-current="page">
+                            {label}
+                        </span>
+                    ) : (
+                        <a href={href} className='block py-2 px-4 no-underline rounded-md nav-link'>
+                            {label}
+                        </a>
+                    )}
                 </li>
-            ))}
+            )})}
         </ul>
     </nav>
 }

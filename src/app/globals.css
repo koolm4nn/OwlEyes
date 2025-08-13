@@ -1,8 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f9fbfd;
+  --foreground: #111827;
+
+  /* Nav items*/
+  --nav-bg: #1e3a8a;
+  --nav-link-bg: #111827;
+  --nav-link-hover-bg: #3b82f6;
+  --nav-link-active-bg: #f9fbfd;
+  --nav-link-text: #ffffff;
+  --nav-link-hover-text: white;
+  --nav-link-active-text: #111827;
 }
 
 
@@ -11,13 +20,36 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  /* Navigation Bar Colors */
+  --color-nav-bg: var(--nav-bg);
+  --color-nav-bg: var(--nav-link-bg);
+  --color-nav-hover-bg: var(--nav-link-hover-bg);
+  --color-nav-active-bg: var(--nav-link-active-bg);
+  --color-nav-text: var(--nav-link-text);
+  --color-nav-hover-text: var(--nav-link-hover-text);
+  --color-nav-active-text: var(--nav-link-active-text);
+  
 }
 
-@media (prefers-color-scheme: dark) {
+/*@media (prefers-color-scheme: dark) {
   :root {
     --background: #050d38;
     --foreground: #ededed;
   }
+}*/
+
+.nav-link-active {
+  background-color: var(--nav-link-active-bg);
+  color: var(--nav-link-active-text)
+}
+
+.nav-link {
+  background-color: var(--nav-link-bg);
+  color: var(--nav-link-text);
+}
+.nav-link:hover {
+  background-color: var(--nav-link-hover-bg);
+  color: var(--nav-link-hover-text);
 }
 
 body {
