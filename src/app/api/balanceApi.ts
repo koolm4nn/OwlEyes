@@ -1,4 +1,4 @@
-import { Balance } from "@/types";
+import { BalanceWithAccount } from "@/types";
 /**
  * API layer exposing REST calls for balances.
  */
@@ -6,10 +6,10 @@ import { Balance } from "@/types";
 /**
  * Fetches all balances
  * 
- * @returns {Balance[]} an array of balances
+ * @returns {BalanceWithAccount[]} an array of balances
  * @throws {Error} if the request fails
  */
-export async function fetchBalances(): Promise<Balance[]>{
+export async function fetchBalances(): Promise<BalanceWithAccount[]>{
     const res = await fetch("/api/balances");
     if(!res.ok) throw new Error("Failed to fetch balances");
     return res.json();

@@ -1,6 +1,6 @@
 import { AccountRepository } from "@/repositories/accountRepository";
 import { BaseService } from "./baseService";
-import { Account } from "@/types";
+import { AccountWithBank } from "@/types";
 
 /**
  * Service layer for handling business logic related to accounts.
@@ -10,9 +10,9 @@ export class AccountService extends BaseService<AccountRepository>{
     /**
      * Retrieves all accounts
      * 
-     * @returns {Account[]} an array of accounts
+     * @returns {AccountWithBank[]} an array of accounts
      */
-    findAll(): Account[]{
+    findAll(): AccountWithBank[]{
         return this.repo.findAll();
     }
 

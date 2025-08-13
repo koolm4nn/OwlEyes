@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { AccountService } from "@/services/accountService";
 import { AccountRepository } from "@/repositories/accountRepository";
+import { BankService } from "@/services/bankService";
+import { BankRepository } from "@/repositories/bankRepository";
 
 /**
  * Api route handler for `/api/accounts`.
@@ -58,6 +60,11 @@ export async function POST(req: Request): Promise<NextResponse<{insertedId?: num
             return NextResponse.json({
                 error: "Invalid or missing id of bank field: " + bankId
             }, {status: 400});
+        }
+
+        const bankExists = !!new BankService(new BankRepository).existsById(bankId);
+        if (!bankExists) {
+            throw new Error(`Bank with id ${bankId} does not exist`);
         }
 
         const result = accountService.create(name, bankId);

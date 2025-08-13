@@ -1,4 +1,4 @@
-import { Account } from "@/types";
+import { AccountWithBank } from "@/types";
 import { BaseRepository } from "./baseRepository";
 
 /**
@@ -11,11 +11,11 @@ export class AccountRepository extends BaseRepository{
     /**
      * Retrieves all accounts from the database.
      * 
-     * @returns {Account[]} An array of Accounts
+     * @returns {AccountWithBank[]} An array of Accounts
      */
-    findAll(): Account[]{
-        const rows = this.db.prepare("select * from accounts").all();
-        return rows as Account[];
+    findAll(): AccountWithBank[]{
+        const rows = this.db.prepare("select a.id, a.name, b.id as bankId, b.name as bankName from accounts a left join banks b on a.bank_id = b.id").all();
+        return rows as AccountWithBank[];
     }
     
     /**

@@ -40,7 +40,7 @@ export async function GET(req: Request): Promise<NextResponse<{exists?: boolean,
         name = normalizeString(name);
         console.log("GET exists: normalized: ", name);
 
-        const existing = bankService.exists(name);
+        const existing = bankService.existsByName(name);
         console.log("GET exists: ");
         console.log(!!existing);
         return NextResponse.json({ exists: !!existing });

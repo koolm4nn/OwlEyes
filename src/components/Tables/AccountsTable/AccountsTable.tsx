@@ -1,15 +1,15 @@
 import { EntityTable } from "@/components/Base/EntityTable";
-import { Account } from "@/types";
+import { AccountWithBank } from "@/types";
 
 // id, Name, bank id
-export function AccountsTable({ accounts }: {accounts: Account[]}){
+export function AccountsTable({ accounts }: {accounts: AccountWithBank[]}){
     return (
         <EntityTable 
             data={accounts} 
             columns={[
                 {label: "ID", render: (account) => account.id},
                 {label: "Name", render: (account) => account.name},
-                {label: "Bank id", render: (account) => account.bankId},
+                {label: "Bank", render: (account) => account.bankName},
                 {label: "", render: () => (
                     <div className="flex justify-end pr-2 py-1">
                         <button 

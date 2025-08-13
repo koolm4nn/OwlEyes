@@ -59,4 +59,15 @@ export class BankRepository extends BaseRepository{
         const result = this.db.prepare("select 1 from banks where name = ?").get(name);
         return result !== undefined;
     }
+
+    /**
+     * Checks if a number exists in the the database as a bank id.
+     * 
+     * @param {number} id - the number to check.
+     * @returns {booean} True if number exists as id, otherwise false
+     */
+    idExists(id: number): boolean{
+        const result = this.db.prepare("select 1 from banks where id = ?").get(id);
+        return result !== undefined;
+    }
 }

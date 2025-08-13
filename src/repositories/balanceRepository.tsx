@@ -1,4 +1,4 @@
-import { Balance } from "@/types";
+import { BalanceWithAccount } from "@/types";
 import { BaseRepository } from "./baseRepository";
 
 /**
@@ -10,11 +10,11 @@ export class BalanceRepository extends BaseRepository{
     /**
      * Retrieves all balances from the database.
      * 
-     * @returns {Balance[]} An array of Balance
+     * @returns {BalanceWithAccount[]} An array of Balance
      */
-    findAll(): Balance[]{
-        const rows = this.db.prepare("select * from balances").all();
-        return rows as Balance[];
+    findAll(): BalanceWithAccount[]{
+        const rows = this.db.prepare("select b.id, b.amount, b.timestamp, a.id, a.name from balances b left join accounts a on a.id = b.account_id").all();
+        return rows as BalanceWithAccount[];
     }
 
     /**
@@ -22,10 +22,16 @@ export class BalanceRepository extends BaseRepository{
      * 
      * @param {number} amount - the amount of the account.
      * @param {number} accountId - The ID of the account associated with this balance.
+     * @param {number} timestamp - Timestamp of the creation as unix timestamp. If no timestamp is provided, .now() is used
      * @returns {number} The id of the row inserted
      */
-    create(amount: number, accountId: number): number{
-        const result = this.db.prepare("insert into balances (amount, account_id) VALUES(?, ?)").run(amount, accountId);
+    create(amount: number, accountId: number, timestamp?: number): number{
+        let result;
+        if(timestamp === undefined){
+            result = this.db.prepare("insert into balances (amount, account_id) VALUES(?, ?)").run(amount, accountId);
+        } else {
+            result = this.db.prepare("insert into balances (amount, account_id, timestamp) VALUES(?, ?, ?)").run(amount, accountId, timestamp);
+        }
         return result.lastInsertRowid as number;
     }
 

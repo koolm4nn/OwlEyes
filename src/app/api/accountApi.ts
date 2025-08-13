@@ -1,4 +1,4 @@
-import { Account } from "@/types";
+import { Account, AccountWithBank } from "@/types";
 /**
  * API layer exposing REST calls for accounts.
  */
@@ -10,7 +10,7 @@ import { Account } from "@/types";
  * @returns {Promise<Account[]>} an array of all account objects
  * @throws {Error} if the request fails
  */
-export async function fetchAccounts(): Promise<Account[]>{
+export async function fetchAccounts(): Promise<AccountWithBank[]>{
     const res = await fetch("/api/accounts");
     if(!res.ok) throw new Error("Failed to fetch accounts.");
     return res.json();

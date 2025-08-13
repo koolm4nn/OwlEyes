@@ -32,8 +32,18 @@ export class BankService extends BaseService<BankRepository>{
      * @param {string} name - bank name to check 
      * @returns {boolean} True if bank with name exists, false otherwise
      */
-    exists(name: string): boolean{
+    existsByName(name: string): boolean{
         return this.repo.nameExists(name);
+    }
+
+    /**
+     * Checks if a bank with 'id' exists
+     * 
+     * @param {number} id - bank id to check 
+     * @returns {boolean} True if bank with id exists, false otherwise
+     */
+    existsById(id: number): boolean{
+        return this.repo.idExists(id);
     }
 
     // delete
