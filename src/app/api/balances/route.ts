@@ -46,6 +46,7 @@ export async function POST(req: Request): Promise<NextResponse<{insertedId?: num
         const body = await req.json();
         const { amount: amount } = body;
         const { accountId: accountId } = body;
+        const { timestamp: timestamp} = body;
 
         if(!amount || typeof amount !== "number"){
             return NextResponse.json({
@@ -59,8 +60,7 @@ export async function POST(req: Request): Promise<NextResponse<{insertedId?: num
             }, {status: 400});
         }
 
-        const result = balanceService.create(amount, accountId);
-
+        const result = balanceService.create(amount, accountId, timestamp);
         return NextResponse.json({ insertedId: result})
     } catch(err){
         console.error("POST balance error: " + err);

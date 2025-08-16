@@ -1,6 +1,7 @@
 import {useQuery, useMutation, useQueryClient, UseMutationOptions} from "@tanstack/react-query";
 import { fetchBalances, createBalance } from "@/app/api/balanceApi";
 import { QUERY_KEYS } from "@/queryKeys";
+import { timeStamp } from "console";
 
 /**
  * React query hook to fetch all balances.
@@ -39,14 +40,14 @@ export function useBalances(){
 export function useCreateBalance(options?: UseMutationOptions<
   {insertedId: number},
   Error,
-  { amount: number, accountId: number }
+  { amount: number, accountId: number, timestamp?: number}
   >
 ) {
   const queryClient = useQueryClient();
   return useMutation({
     ...options, // Keep option when adding, e.g. onSuccess
-    mutationFn: ({amount, accountId}: {amount: number, accountId: number}) => 
-        createBalance(amount, accountId),
+    mutationFn: ({amount, accountId, timestamp}: {amount: number, accountId: number, timestamp: number}) => 
+        createBalance(amount, accountId, timestamp),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.balances() });
       if(options?.onSuccess) options.onSuccess(data, variables, context);
