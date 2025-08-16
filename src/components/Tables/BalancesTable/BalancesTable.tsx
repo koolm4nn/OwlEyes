@@ -1,15 +1,23 @@
 import { EntityTable } from "@/components/Base/EntityTable";
-import { Balance } from "@/types";
+import { Balance, BalanceWithMetaData } from "@/types";
+
+function convertUnixToDate(unixDate : number) : string {
+    return new Date(unixDate * 1000).toLocaleDateString();
+}
 
 // id, Name, bank id
-export function BalancesTable({ balances }: {balances: Balance[]}){
+export function BalancesTable({ balances }: {balances: BalanceWithMetaData[]}){
     return (
         <EntityTable 
             data={balances} 
             columns={[
                 {label: "ID", render: (balance) => balance.id},
                 {label: "amount", render: (balance) => balance.amount},
-                {label: "Account id", render: (balance) => balance.accountId},
+                {label: "Timestamp", render: (balance) => convertUnixToDate(balance.timestamp)},
+                {label: "Account id", render: (balance) => balance.accountId ?? " - "},
+                {label: "Account Name", render: (balance) => balance.accountName ?? " - "},
+                {label: "Bank id", render: (balance) => balance.bankId ?? " - "},
+                {label: "Bank Name", render: (balance) => balance.bankName ?? " - "},
                 {label: "", render: () => (
                     <div className="flex justify-end pr-2 py-1">
                         <button 

@@ -1,4 +1,4 @@
-import { BalanceWithAccount } from "@/types";
+import { BalanceWithMetaData } from "@/types";
 import { BaseRepository } from "./baseRepository";
 
 /**
@@ -10,11 +10,11 @@ export class BalanceRepository extends BaseRepository{
     /**
      * Retrieves all balances from the database.
      * 
-     * @returns {BalanceWithAccount[]} An array of Balance
+     * @returns {BalanceWithMetaData[]} An array of Balance
      */
-    findAll(): BalanceWithAccount[]{
-        const rows = this.db.prepare("select b.id, b.amount, b.timestamp, a.id, a.name from balances b left join accounts a on a.id = b.account_id").all();
-        return rows as BalanceWithAccount[];
+    findAll(): BalanceWithMetaData[]{
+        const rows = this.db.prepare("select blc.id, blc.amount, blc.timestamp, acc.id as accountId, acc.name as accountName, bk.id as bankId, bk.name as bankName from balances blc left join accounts acc on acc.id = blc.account_id left join banks bk on bk.id = acc.bank_id").all();
+        return rows as BalanceWithMetaData[];
     }
 
     /**

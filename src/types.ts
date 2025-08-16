@@ -53,18 +53,22 @@ export interface Balance {
 }
 
 /**
- * Represents a balance entry for an account.
+ * Represents a balance entry for an account and the associated bank.
  * 
  * @property id - Unique identifier for the balance record.
  * @property amount - The monetary amount of the balance.
  * @property timestamp - Timestamp of creation as unix timestamp.
  * @property accountId - Foreign key linking the balance to an account.
  * @property accountName - Name of the associated account.
+ * @property bankId - Foreign key linking to the bank associated with the linked account.
+ * @property bankName - Name of the associated bank.
  */
-export interface BalanceWithAccount {
+export interface BalanceWithMetaData {
     id: number,
     amount: number,
     timestamp: number,
     accountId: number,
-    accountName: string
+    accountName: string,
+    bankId: number,
+    bankName: string
 }
