@@ -19,8 +19,6 @@ export function AddBankForm(){
         try{
             const result = await checkExists({ name });
 
-            console.log("Result:");
-            console.log(result);
             if(result.exists){
                 setErrorMessage("Name already exists.");
                 return;
@@ -34,7 +32,7 @@ export function AddBankForm(){
     };
 
     return (
-    <form onSubmit={handleSubmit} >
+    <form onSubmit={handleSubmit} className="bg-red-100">
         <input 
             placeholder="Name (e.g. BNZ)" 
             value={name} 

@@ -17,7 +17,7 @@ export default function Banks(){
     return (
         <div className="flex justify-center px-12 py-8">
             <div className="flex w-full max-w-6xl gap-8">
-                <div className="basis-[60%] border-r pr-6">
+                <div className="basis-[60%] pr-6">
                     <BanksTable banks={banks} />
                 </div>
                 <div className="basis-[40%] pl-6">
