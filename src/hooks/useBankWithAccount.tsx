@@ -20,7 +20,7 @@ async function fetchBanksDetails(): Promise<BankIncludingAccounts[]> {
  */
 export function useBanksWithAccounts() {
     return useQuery<BankIncludingAccounts[]>({
-        queryKey: [QUERY_KEYS.banks, QUERY_KEYS.accounts, QUERY_KEYS.balances],
+        queryKey: QUERY_KEYS.banksWithAccounts(),
         queryFn: fetchBanksDetails,
         refetchOnWindowFocus: false
     })

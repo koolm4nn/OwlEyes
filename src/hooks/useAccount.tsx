@@ -49,6 +49,7 @@ export function useCreateAccount(options?: UseMutationOptions<
         createAccount(name, bankId),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.accounts() });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.banksWithAccounts() });
       if(options?.onSuccess) options.onSuccess(data, variables, context)
     },
   });

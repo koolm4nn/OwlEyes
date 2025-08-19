@@ -10,4 +10,5 @@ export const QUERY_KEYS = {
   accountById: (id: number) => ["accounts", id] as const,
   banks: () => ["banks"] as const,
   balances: () => ["balances"] as const,
+  banksWithAccounts: () => ["banks-with-accounts"] as const,
 };

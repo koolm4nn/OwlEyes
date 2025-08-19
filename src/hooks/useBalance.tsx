@@ -50,6 +50,7 @@ export function useCreateBalance(options?: UseMutationOptions<
         createBalance(amount, accountId, timestamp),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.balances() });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.banksWithAccounts() });
       if(options?.onSuccess) options.onSuccess(data, variables, context);
     }
   });

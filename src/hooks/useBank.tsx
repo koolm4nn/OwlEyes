@@ -62,7 +62,7 @@ export function useCreateBank(options?: UseMutationOptions<
         createBank(name),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.banks() });
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.banks(), QUERY_KEYS.accounts(), QUERY_KEYS.balances()] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.banksWithAccounts() });
       if(options?.onSuccess) options.onSuccess(data, variables, context);
     }
   });
