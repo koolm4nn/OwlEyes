@@ -5,19 +5,24 @@ import React from "react";
  * @template T The type of the data entity to display.
  */
 
+interface EntityTableColumn<T> {
+    label: string, 
+    render: (item: T) => React.ReactNode,
+    width?: string
+}
 
 /**
  * Props for EntityTable component.
  * 
  * @template T
  * @property {T[]} data - Array of data entities to render as table rows.
- * @property {{ label: string, render: (item: T) => React.ReactNode }[]} columns - 
- *    Configuration of table columns, including header label and a render function
- *    that defines how to display each column’s data for a given entity.
+ * @property {EntityTableColumn} columns - 
+ *    Configuration of table columns, including header label, a render function
+ *    that defines how to display each column’s data for a given entity and a optional width in %.
  */
 interface EntityTableProps<T> {
     data: T[],
-    columns: { label: string, render: (item: T) => React.ReactNode} [];
+    columns: EntityTableColumn<T>[];
 }
 
 /**
@@ -31,28 +36,30 @@ interface EntityTableProps<T> {
  */
 export function EntityTable<T>({data, columns}: EntityTableProps<T>){
     return (
-        <table className="min-w-full border border-gray-300 border-collapse rounded-lg overflow-hidden">
-            <thead className="bg-gray-400">
-                <tr>
-                    {columns.map((c, i) => (
-                        <th 
-                        key={i}
-                        className="px-4 py-2 text-left font-semibold text-gray-700 border-b border-gray-300"
-                        >{c.label}</th>
-                    ))}
-                </tr>
-            </thead>
-            <tbody>
-                {data.map((item, rowIndex) => (
-                    <tr key={rowIndex}
-                        className={" hover:bg-gray-900 text-gray-800 " + (rowIndex % 2 == 0? "bg-white" : "bg-gray-300")}
-                    >
-                        {columns.map((c, colIndex) => (
-                            <td key={colIndex}>{c.render(item)}</td>
+        <div className="mb-6">
+            <table className="border-collapse rounded-t-xl min-w-full overflow-hidden">
+                <thead className="bg-blue-300 rounded-xs">
+                    <tr>
+                        {columns.map((c, i) => (
+                            <th 
+                            key={i}
+                            className="px-4 py-2 text-left font-semibold text-gray-700"
+                            >{c.label}</th>
                         ))}
                     </tr>
-                ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {data.map((item, rowIndex) => (
+                        <tr key={rowIndex}
+                            className={"hover:bg-gray-200 " + (rowIndex % 2 == 0? "bg-white" : "bg-gray-100")}
+                        >
+                            {columns.map((c, colIndex) => (
+                                <td key={colIndex} className="border border-gray-500 hover:bg-gray-300">{c.render(item)}</td>
+                            ))}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     )
 }

@@ -32,12 +32,16 @@ export function AddBankForm(){
     };
 
     return (
-    <form onSubmit={handleSubmit} className="bg-red-100">
+    <form onSubmit={handleSubmit} className="mx-12 p-5 rounded-lg bg-gray-200">
         <input 
-            placeholder="Name (e.g. BNZ)" 
+            placeholder="Name (e.g. BNZ)"
+            className="mr-2 border border-grey-300"
             value={name} 
             onChange={(e) => {setName(e.target.value); setErrorMessage("");} }/>
-        <button type="submit" disabled={isPending}>
+        <button 
+            type="submit" 
+            disabled={isPending} 
+            className="rounded-lg border border-grey-300 pl-3 pr-3 pt-1 pb-1">
             {isPending? "Saving..." : "Add Bank"}
         </button>
         {errorMessage && <p>Error: {errorMessage}</p>}
