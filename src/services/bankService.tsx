@@ -1,11 +1,21 @@
 import { BankRepository } from "@/repositories/bankRepository";
 import { BaseService } from "./baseService";
-import { Bank } from "@/types";
+import { Bank, BankIncludingAccounts } from "@/types";
+import { AccountRepository } from "@/repositories/accountRepository";
+import { BalanceRepository } from "@/repositories/balanceRepository";
 
 /**
  * Service layer for handling business logic related to balances.
  */
 export class BankService extends BaseService<BankRepository>{
+    private accountRepo: AccountRepository;
+    private balanceRepo: BalanceRepository;
+
+    constructor(bankRepo: BankRepository, accountRepo: AccountRepository, balanceRepo: BalanceRepository){
+        super(bankRepo);
+        this.accountRepo = accountRepo;
+        this.balanceRepo = balanceRepo;
+    }
 
     /**
      * Retrieves all banks.
@@ -14,6 +24,30 @@ export class BankService extends BaseService<BankRepository>{
      */
     findAll(): Bank[]{
         return this.repo.findAll();
+    }
+
+    /**
+     * Retrieves all banks together with the accounts belonging to each bank.
+     * 
+     * @returns {BankIncludingAccounts[]} all banks with their accounts
+     */
+    findAllIncludingAccounts(): BankIncludingAccounts[]{
+        const banks = this.findAll();
+        const accounts = this.accountRepo.findAll();
+        const balances = this.balanceRepo.findAll();
+
+        return banks.map(bank => {
+            const bankAccounts = accounts.filter(acc => acc.bankId === bank.id);
+            const bankBalances = balances.filter(blc => bankAccounts.flatMap(acc => acc.id).includes(blc.accountId))
+            const balanceSum = bankBalances.reduce((acc, curr) => {return acc += curr.amount}, 0)
+
+            return {
+                id: bank.id,
+                name: bank.name,
+                accounts: bankAccounts,
+                balance: balanceSum
+            }
+        })
     }
 
     /**

@@ -1,4 +1,4 @@
-import { Bank } from "@/types";
+import { Bank, BankIncludingAccounts } from "@/types";
 
 /**
  * API layer exposing REST calls for banks.
@@ -13,6 +13,18 @@ import { Bank } from "@/types";
 export async function fetchBanks(): Promise<Bank[]>{
     const res = await fetch("/api/banks");
     if(!res.ok) throw new Error("Failed to fetch banks.");
+    return res.json();
+}
+
+/**
+ * Fetches all banks and their accounts.
+ * 
+ * @returns {Promise<BankIncludingAccounts[]>} Promise with an array of banks including accounts
+ * @throws {Error} if the request fails
+ */
+export async function fetchBanksIncludingAccounts(): Promise<BankIncludingAccounts[]>{
+  const res = await fetch("api/bank/with-accounts");
+    if(!res.ok) throw new Error("Failed to fetch banks including accounts.");
     return res.json();
 }
 
@@ -41,12 +53,9 @@ export async function createBank(name: string): Promise<{insertedId: number}>{
  * @throws {Error} if request fails
  */
 export async function existsBank(name: string): Promise<{exists: boolean}>{
-  console.log("Checking if bank exists:", name);
   const res = await fetch(`/api/banks/exists?name=${encodeURIComponent(name)}`);
   if(!res.ok) throw new Error("Failed to lookup bank existence.");
   const result = res.json();
-  console.log("Bank exists?");
-  console.log(result);
   return result;
 }
 

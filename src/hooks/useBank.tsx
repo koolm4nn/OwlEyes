@@ -1,5 +1,5 @@
 import {useQuery, useMutation, useQueryClient, UseMutationOptions} from "@tanstack/react-query";
-import { fetchBanks, createBank, existsBank } from "@/app/api/bankApi";
+import { fetchBanks, createBank, existsBank, fetchBanksIncludingAccounts } from "@/app/api/bankApi";
 import { QUERY_KEYS } from "@/queryKeys";
 
 
@@ -62,6 +62,7 @@ export function useCreateBank(options?: UseMutationOptions<
         createBank(name),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.banks() });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.banks(), QUERY_KEYS.accounts(), QUERY_KEYS.balances()] });
       if(options?.onSuccess) options.onSuccess(data, variables, context);
     }
   });
