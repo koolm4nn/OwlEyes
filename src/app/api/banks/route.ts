@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
-import { BankRepository } from "@/repositories/bankRepository";
-import { BankService } from "@/services/bankService";
-import { Bank } from "@/types";
+import ServiceContainer from "@/services/serviceContainer";
 
 /**
  * Api route handler for `/api/banks`.
@@ -13,8 +11,7 @@ import { Bank } from "@/types";
  */
 
 // Instantiate service layer with corresponding repository
-const bankService = new BankService(new BankRepository());
-
+const bankService = ServiceContainer.bankService;
 
 /**
  * GET /api/banks

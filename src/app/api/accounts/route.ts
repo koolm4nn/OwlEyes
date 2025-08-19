@@ -1,8 +1,5 @@
 import { NextResponse } from "next/server";
-import { AccountService } from "@/services/accountService";
-import { AccountRepository } from "@/repositories/accountRepository";
-import { BankService } from "@/services/bankService";
-import { BankRepository } from "@/repositories/bankRepository";
+import ServiceContainer from "@/services/serviceContainer";
 
 /**
  * Api route handler for `/api/accounts`.
@@ -14,7 +11,8 @@ import { BankRepository } from "@/repositories/bankRepository";
  */
 
 // Instantiate service layer with corresponding repository
-const accountService = new AccountService(new AccountRepository());
+const accountService = ServiceContainer.accountService;
+const bankService = ServiceContainer.bankService;
 
 /**
  * GET /api/accounts
@@ -62,7 +60,7 @@ export async function POST(req: Request): Promise<NextResponse<{insertedId?: num
             }, {status: 400});
         }
 
-        const bankExists = !!new BankService(new BankRepository).existsById(bankId);
+        const bankExists = !!bankService.existsById(bankId);
         if (!bankExists) {
             throw new Error(`Bank with id ${bankId} does not exist`);
         }

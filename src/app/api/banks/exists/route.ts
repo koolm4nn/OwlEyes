@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { BankRepository } from "@/repositories/bankRepository";
-import { BankService } from "@/services/bankService";
 import { normalizeString } from "@/utils/validator";
+import ServiceContainer from "@/services/serviceContainer";
 
 /**
  * Api route handler for `/api/banks/exists`.
@@ -13,7 +12,7 @@ import { normalizeString } from "@/utils/validator";
  */
 
 // Instantiate service layer with corresponding repository
-const bankService = new BankService(new BankRepository());
+const bankService = ServiceContainer.bankService;
 
 /**
  * GET /api/banks/exists?name=...
