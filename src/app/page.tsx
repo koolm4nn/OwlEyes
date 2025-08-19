@@ -51,8 +51,7 @@ function groupBalances(balances: BalanceWithMetaData[]){
     id, 
     label: acc.label,
     data: acc.values,
-    connectNulls: true,
-    curve: "linear"
+    connectNulls: true
   }));
 
   return { dates, series };

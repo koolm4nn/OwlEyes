@@ -21,7 +21,7 @@ export function BanksTable({ banks }: {banks: BankIncludingAccounts[]}){
                     </div>
                     <p className="text-sm text-gray-500">$</p>
                     <p className="mt-2 text-sm">Accounts: {bank.accounts.length}</p>
-                    <p className="mt-2 text-sm text-green-600">{`${bank.balance < 0 ? '-' : '+'}${formatted(bank.balance)}`}</p>
+                    <p className={`mt-2 text-sm ${bank.balance < 0? 'text-red-600' : 'text-green-600'}`}>{`${bank.balance < 0 ? '' : '+'}${formatted(bank.balance)}`}</p>
                 </div>
             ))}
         </div>
