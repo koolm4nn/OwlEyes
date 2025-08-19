@@ -10,6 +10,22 @@ export interface Bank {
 }
 
 /**
+ * Represents a bank entity including Metadata like number of accounts
+ * 
+ * @property id - Unique identifier for the bank.
+ * @property name - Display name of the bank.
+ * @property accounts - Array of Accounts that are created under this bank.
+ * @property balance - Overall balance of the accounts of the bank.
+ * 
+ */
+export interface BankIncludingAccounts {
+    id: number,
+    name: string,
+    accounts: Account[],
+    balance: number
+}
+
+/**
  * Represents an account entity associated with a bank.
  * 
  * @property id - Unique identifier for the account.
