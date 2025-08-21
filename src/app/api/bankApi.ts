@@ -45,6 +45,13 @@ export async function createBank(name: string): Promise<{insertedId: number}>{
   return res.json();
 }
 
+export async function deleteBank(id : number): Promise<{success: boolean}>{
+  const res = await fetch(`/api/banks/${id}`, {method: "DELETE"});
+
+  if (!res.ok) throw new Error("Failed to delete bank.");
+  return res.json();
+}
+
 /**
  * Checks if bank exists
  * 

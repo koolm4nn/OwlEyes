@@ -1,5 +1,5 @@
 import {useQuery, useMutation, useQueryClient, UseMutationOptions} from "@tanstack/react-query";
-import { fetchBanks, createBank, existsBank, fetchBanksIncludingAccounts } from "@/app/api/bankApi";
+import { fetchBanks, createBank, existsBank, fetchBanksIncludingAccounts, deleteBank } from "@/app/api/bankApi";
 import { QUERY_KEYS } from "@/queryKeys";
 
 
@@ -34,6 +34,30 @@ export function useExistsBank(){
   return useMutation({
     mutationFn: ({name}: {name: string}) => existsBank(name)
   })
+}
+
+/**
+ * 
+ * @param options 
+ * @returns 
+ */
+export function useDeleteBank(options?: UseMutationOptions<
+  {success: boolean}, // Return type
+  Error, // Error type: unkown | Error
+  { id: number} // variable type
+  >
+) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    ...options, // Spread options: keep "old" onSuccess
+    mutationFn: ({id}: {id: number}) => 
+        deleteBank(id),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.banks() });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.banksWithAccounts() });
+      if(options?.onSuccess) options.onSuccess(data, variables, context);
+    }
+  });
 }
 
 /**
