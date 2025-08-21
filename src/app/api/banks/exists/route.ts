@@ -27,7 +27,6 @@ const bankService = ServiceContainer.bankService;
  */
 export async function GET(req: Request): Promise<NextResponse<{exists?: boolean, error?: string}>>{
     try{
-        console.log("GET exists");
         const { searchParams } = new URL(req.url);
         let name = searchParams.get("name");
 
