@@ -39,13 +39,13 @@ export class BankService extends BaseService<BankRepository>{
         return banks.map(bank => {
             const bankAccounts = accounts.filter(acc => acc.bankId === bank.id);
             const bankBalances = balances.filter(blc => bankAccounts.flatMap(acc => acc.id).includes(blc.accountId))
-            const balanceSum = bankBalances.reduce((acc, curr) => {return acc += curr.amount}, 0)
+            //const balanceSum = bankBalances.reduce((acc, curr) => {return acc += curr.amount}, 0)
 
             return {
                 id: bank.id,
                 name: bank.name,
                 accounts: bankAccounts,
-                balance: balanceSum
+                balance: bankBalances.pop()?.amount ?? 0
             }
         })
     }
@@ -80,7 +80,15 @@ export class BankService extends BaseService<BankRepository>{
         return this.repo.idExists(id);
     }
 
-    // delete
+    /**
+     * Deletes the bank by 'id'
+     * 
+     * @param {number} id - The id of the bank to delete 
+     * @returns {boolean} True if bank was deleted, otherwise false
+     */
+    delete(id: number): boolean {
+        return this.repo.delete(id);
+    }
 
     // update
 }
