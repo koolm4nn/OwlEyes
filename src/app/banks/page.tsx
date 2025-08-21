@@ -17,11 +17,11 @@ export default function Banks(){
     return (
         <div className="flex justify-center">
             <div className="flex w-full">
-                <div className="basis-[60%] pt-2">
+                <div className="basis-[60%]">
+                    <AddBankForm />
                     <BanksTable banks={banks} />
                 </div>
-                <div className="basis-[40%] pt-2">
-                    <AddBankForm />
+                <div className="basis-[40%]">
                 </div>
             </div>
         </div>
