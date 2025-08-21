@@ -12,6 +12,16 @@
   --nav-link-text: #ffffff;
   --nav-link-hover-text: white;
   --nav-link-active-text: #111827;
+
+  /* Button colors */
+  --primary: #1d4ed8;    /* blue-700: main action buttons */
+  --secondary: #326ded;  /* blue-600: secondary actions */
+  --accent: #9333ea;     /* purple-600: highlights or badges */
+  --focus: #5cb0e9;      /* blue-500: focus outlines, hover highlights */
+  --success: #065f46;    /* green-800: success / positive actions */
+  --warning: #d97706;    /* amber-600: warnings */
+  --select: #f0ba19;    
+  --error: #d03131;      /* red-700: errors / destructive actions */
 }
 
 
@@ -28,7 +38,16 @@
   --color-nav-text: var(--nav-link-text);
   --color-nav-hover-text: var(--nav-link-hover-text);
   --color-nav-active-text: var(--nav-link-active-text);
-  
+
+  /* Colors */
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-focus: var(--focus);
+  --color-select: var(--select);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
 }
 
 /*@media (prefers-color-scheme: dark) {
