@@ -7,7 +7,7 @@ create table if not exists accounts (
 	id integer primary key autoincrement,
 	name text not null unique,
 	bank_id integer not null,
-	foreign key (bank_id) references banks(id)
+	foreign key (bank_id) references banks(id) on delete cascade
 );
 
 create table if not exists balances (
@@ -15,5 +15,5 @@ create table if not exists balances (
 	amount real not null,
 	timestamp integer not null default (strftime('%s', 'now')),
 	account_id integer not null,
-	foreign key (account_id) references accounts(id)
+	foreign key (account_id) references accounts(id) on delete cascade
 );
