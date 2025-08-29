@@ -1,5 +1,6 @@
 'use client'
 
+import React from "react";
 import { useState } from "react"
 import { SketchPicker } from "react-color";
 
@@ -7,14 +8,24 @@ function ColorPicker() {
     const [color, setColor] = useState("#ff0000")
 
     return (
+        <>
         <div>
             <input 
                 type="color"
                 value={color}
                 onChange={(e) => setColor(e.target.value)}>
                 </input>
-                    <p>Selected color: {color}</p>
+        </div>     
+        <div>
+                <SketchPicker 
+                    color={color}
+                    onChangeComplete={(color) => setColor(color.hex)}
+                />
         </div>
+        <div>
+            <p>Selected color: {color}</p>
+        </div>
+        </>
     )
 } 
 

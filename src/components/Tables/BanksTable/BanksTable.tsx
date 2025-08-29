@@ -18,7 +18,7 @@ export function BanksTable({ banks }: {banks: BankIncludingAccounts[]}){
     });
 
     return (
-        <div className="grid grid-cols-2 rounded-sm gap-4 p-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 rounded-sm gap-2 sm:gap-4 sm:p-2">
             {banks.map((bank) => (
                 <BankCard 
                     key={bank.id}
