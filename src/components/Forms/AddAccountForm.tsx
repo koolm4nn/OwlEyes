@@ -2,21 +2,25 @@ import { useCreateAccount } from "@/hooks/useAccount";
 import { useBanks } from "@/hooks/useBank";
 import { useState } from "react";
 
-export function AddAccountForm(){
+export function AddAccountForm({ onSuccess }: { onSuccess: () => void}){
     const [name, setName] = useState("");
     const [bankId, setBankId] = useState<number | "">("");
     const [errorMessage, setErrorMessage] = useState("");
 
+    // Dropdown data
     const {data: banks = [], isLoading: banksLoading } = useBanks();
 
     const {mutate: createAccount, isPending} = useCreateAccount({
         onSuccess: () => {
-            setName("");
-            setBankId("");
+            resetForm();
+            onSuccess?.();
         }
     });
 
-    //const { mutateAsync: checkExists } = useExistsAccount();
+    const resetForm = () => {
+            setName("");
+            setBankId("");
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -32,15 +36,6 @@ export function AddAccountForm(){
         }
 
         try{
-            //const result = await checkExists({ name });
-
-            //console.log("Result:");
-            //console.log(result);
-            //if(result.exists){
-            //    setErrorMessage("Name already exists.");
-            //    return;
-            //}
-
             setErrorMessage("");
             createAccount( { name, bankId } );
         } catch(err) {
@@ -50,30 +45,38 @@ export function AddAccountForm(){
     };
 
     return (
-    <form onSubmit={handleSubmit} >
-        <input 
-            placeholder="Name (e.g. Daily Money Account)" 
-            value={name} 
-            onChange={(e) => {setName(e.target.value); setErrorMessage("");} }/>
-        <select
-            value={bankId}
-            onChange={(e) => {
-                setBankId(Number.parseInt(e.target.value));
-                setErrorMessage("");
-            }}
-            disabled={banksLoading}
-        >
-            <option value="">Select Bank</option>
-            {banks.map((bank) => (
-                <option key={bank.id} value={bank.id}>
-                    {bank.name}
-                </option>
-            ))}
-        </select>
-        <button type="submit" disabled={isPending}>
-            {isPending? "Saving..." : "Add Account"}
-        </button>
-        {errorMessage && <p>Error: {errorMessage}</p>}
-    </form>
+        <form onSubmit={handleSubmit} className="space-y-2">
+            <input 
+                placeholder="Name (e.g. Daily Money Account)" 
+                className="w-full border rounded p-2"
+                value={name} 
+                onChange={(e) => {
+                    setName(e.target.value); 
+                    setErrorMessage("");} 
+                }/>
+            <select
+                className="w-full border rounded p-2"
+                value={bankId}
+                onChange={(e) => {
+                    setBankId(Number.parseInt(e.target.value));
+                    setErrorMessage("");
+                }}
+                disabled={banksLoading}
+            >
+                <option value="">Select Bank</option>
+                {banks.map((bank) => (
+                    <option key={bank.id} value={bank.id}>
+                        {bank.name}
+                    </option>
+                ))}
+            </select>
+            <button 
+                type="submit" 
+                disabled={isPending}
+                className="rounded-lg w-[200px] border bg-emerald-300 border-gray-300 px-3 py-1">
+                {isPending? "Saving..." : "Add Account"}
+            </button>
+            {errorMessage && <p>Error: {errorMessage}</p>}
+        </form>
     )
 }

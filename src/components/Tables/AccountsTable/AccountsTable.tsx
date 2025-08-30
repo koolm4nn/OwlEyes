@@ -11,9 +11,12 @@ export function AccountsTable({ accounts }: {accounts: AccountWithBank[]}){
                 {label: "Name", render: (account) => account.name},
                 {label: "Bank", render: (account) => account.bankName},
                 {label: "", render: () => (
-                    <div className="flex justify-end pr-2 py-1">
+                    <div 
+                        className=""
+                        >
                         <button 
-                            className="px-4 py-1 text-sm text-white bg-red-500 rounded hover:bg-red-600 transition-colors">
+                            className="w-full h-full px-4 py-1 text-sm text-white bg-red-500 hover:bg-red-600 transition-colors"       
+                            onClick={() => console.log("Deletion clicked.")}>
                                 Delete
                         </button>
                     </div>
