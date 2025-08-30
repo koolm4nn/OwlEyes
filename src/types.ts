@@ -18,7 +18,7 @@ export interface Bank {
  * @property balance - Overall balance of the accounts of the bank.
  * 
  */
-export interface BankIncludingAccounts {
+export interface BankWithAccounts {
     id: number,
     name: string,
     accounts: Account[],
@@ -35,6 +35,7 @@ export interface BankIncludingAccounts {
 export interface Account {
     id: number,
     name: string,
+    balance: number,
     bankId: number
 }
 
@@ -49,6 +50,7 @@ export interface Account {
 export interface AccountWithBank {
     id: number,
     name: string,
+    balance: number,
     bankId: number,
     bankName: string
 }
