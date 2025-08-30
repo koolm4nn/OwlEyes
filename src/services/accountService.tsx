@@ -27,7 +27,15 @@ export class AccountService extends BaseService<AccountRepository>{
         return this.repo.create(name, bankId);
     }
 
-    // delete
+    /**
+     * Deletes the account by 'id'
+     * 
+     * @param {number} id - The id of the account to delete 
+     * @returns {boolean} True if account was deleted, otherwise false
+     */
+    delete(id: number): boolean {
+        return this.repo.delete(id);
+    }
 
     // update
 }

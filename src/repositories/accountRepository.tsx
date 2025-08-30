@@ -14,10 +14,9 @@ export class AccountRepository extends BaseRepository{
      * @returns {AccountWithBank[]} An array of Accounts
      */
     findAll(): AccountWithBank[]{
-        const rows = this.db.prepare("select a.id, a.name, b.id as bankId, b.name as bankName from accounts a left join banks b on a.bank_id = b.id").all();
+        const rows = this.db.prepare("select a.id, a.name, COALESCE((select bal.amount from balances bal where bal.account_id = a.id order by bal.timestamp desc limit 1), 0) as balance, b.id as bankId, b.name as bankName from accounts a left join banks b on a.bank_id = b.id").all();
         return rows as AccountWithBank[];
     }
-    
     /**
      * Inserts a new account into the database.
      * 

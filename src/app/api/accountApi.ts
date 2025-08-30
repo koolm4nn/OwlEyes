@@ -34,4 +34,18 @@ export async function createAccount(name: string, bankId: number): Promise<{ ins
   return res.json();
 }
 
+/**
+ * Deletes an account by id
+ * 
+ * @param {number} id - the id of the account 
+ * @returns {Promise<{success: boolean}>} The response from the API containing if the deletion was successful
+ * @throws {Error} If the request fails
+ */
+export async function deleteAccount(id : number): Promise<{success: boolean}>{
+  const res = await fetch(`/api/accounts/${id}`, {method: "DELETE"});
+
+  if (!res.ok) throw new Error("Failed to delete account.");
+  return res.json();
+}
+
 // update, delete, ..
