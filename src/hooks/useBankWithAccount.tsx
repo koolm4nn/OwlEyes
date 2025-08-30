@@ -1,9 +1,9 @@
 import {useQuery} from "@tanstack/react-query";
 import { QUERY_KEYS } from "@/queryKeys";
-import { BankIncludingAccounts } from "@/types";
+import { BankWithAccounts } from "@/types";
 
 
-async function fetchBanksDetails(): Promise<BankIncludingAccounts[]> {
+async function fetchBanksDetails(): Promise<BankWithAccounts[]> {
     console.log("Fetching.");
     const res = await fetch("api/banks/with-accounts");
     if(!res.ok) throw new Error("Failed to fetch banks with details.");
@@ -19,7 +19,7 @@ async function fetchBanksDetails(): Promise<BankIncludingAccounts[]> {
  * @returns the return of the query including status, data, error, etc.
  */
 export function useBanksWithAccounts() {
-    return useQuery<BankIncludingAccounts[]>({
+    return useQuery<BankWithAccounts[]>({
         queryKey: QUERY_KEYS.banksWithAccounts(),
         queryFn: fetchBanksDetails,
         refetchOnWindowFocus: false

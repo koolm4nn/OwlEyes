@@ -1,6 +1,6 @@
 import { BankRepository } from "@/repositories/bankRepository";
 import { BaseService } from "./baseService";
-import { Bank, BankIncludingAccounts } from "@/types";
+import { Bank, BankWithAccounts } from "@/types";
 import { AccountRepository } from "@/repositories/accountRepository";
 import { BalanceRepository } from "@/repositories/balanceRepository";
 
@@ -29,9 +29,9 @@ export class BankService extends BaseService<BankRepository>{
     /**
      * Retrieves all banks together with the accounts belonging to each bank.
      * 
-     * @returns {BankIncludingAccounts[]} all banks with their accounts
+     * @returns {BankWithAccounts[]} all banks with their accounts
      */
-    findAllIncludingAccounts(): BankIncludingAccounts[]{
+    findAllIncludingAccounts(): BankWithAccounts[]{
         const banks = this.findAll();
         const accounts = this.accountRepo.findAll();
         const balances = this.balanceRepo.findAll();
