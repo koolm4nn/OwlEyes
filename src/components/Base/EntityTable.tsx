@@ -36,7 +36,7 @@ interface EntityTableProps<T> {
  */
 export function EntityTable<T>({data, columns}: EntityTableProps<T>){
     return (
-        <div className="mb-6">
+        <div className="">
             <table className="border-collapse rounded-t-xl min-w-full overflow-hidden">
                 <thead className="bg-blue-300 rounded-xs">
                     <tr>

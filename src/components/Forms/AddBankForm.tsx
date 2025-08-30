@@ -1,6 +1,5 @@
 import { useCreateBank, useExistsBank } from "@/hooks/useBank";
 import { useState } from "react";
-import { XCircleIcon } from "@heroicons/react/24/outline";
 
 export function AddBankForm({ onSuccess }: { onSuccess?: () => void}){
     const [name, setName] = useState("");
@@ -8,18 +7,21 @@ export function AddBankForm({ onSuccess }: { onSuccess?: () => void}){
 
     const {mutate: createBank, isPending} = useCreateBank({
         onSuccess: () => {
-            setName("");
+            resetForm();
             onSuccess?.();
         }
     });
 
+    // Reset inputs
     const resetForm = () => {
         setErrorMessage("");
         setName("");
     }
 
+    // helper if bank name already exists
     const { mutateAsync: checkExists } = useExistsBank();
 
+    // On submit: if bank name does not exist, create bank
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -39,24 +41,24 @@ export function AddBankForm({ onSuccess }: { onSuccess?: () => void}){
     };
 
     return (
-    <form onSubmit={handleSubmit} className="space-y-2">
-        <input
-            placeholder="Name (e.g. BNZ)"
-            className="w-full border rounded p-2"
-            value={name} 
-            onChange={(e) => {
-                setName(e.target.value); 
-                setErrorMessage("");
-            }}
-        /> 
-        <button 
-            type="submit" 
-            disabled={isPending} 
-            className="rounded-lg w-[200px] border bg-emerald-300 border-grey-300 px-3 py-1">
-            {isPending? "Saving..." : "Add Bank"}
-        </button>
-        
-        {errorMessage && <p className="text-red-400">{errorMessage}</p>}
-    </form>
+        <form onSubmit={handleSubmit} className="space-y-2">
+            <input
+                placeholder="Name (e.g. BNZ)"
+                className="w-full border rounded p-2"
+                value={name} 
+                onChange={(e) => {
+                    setName(e.target.value); 
+                    setErrorMessage("");
+                }}
+            /> 
+            <button 
+                type="submit" 
+                disabled={isPending} 
+                className="rounded-lg w-[200px] border bg-emerald-300 border-grey-300 px-3 py-1">
+                {isPending? "Saving..." : "Add Bank"}
+            </button>
+            
+            {errorMessage && <p className="text-red-400">{errorMessage}</p>}
+        </form>
     );
 }

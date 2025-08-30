@@ -1,9 +1,8 @@
 "use client";
 
-import { AddBankForm } from "@/components/Forms/AddBankForm";
 import { AddBankDesktop } from "@/components/Forms/Wrapper/AddBankDesktop";
 import { AddBankModal } from "@/components/Forms/Wrapper/AddBankModal";
-import { BanksTable } from "@/components/Tables/BanksTable/BanksTable";
+import { BanksGrid } from "@/components/Tables/BanksGrid/BanksGrid";
 import { useBanksWithAccounts } from "@/hooks/useBankWithAccount";
 import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
@@ -27,7 +26,7 @@ export default function Banks(){
             </div>
 
             {/* Banks Grid */}
-            <BanksTable banks={banks} />
+            <BanksGrid banks={banks} />
 
             {/* Mobile Floating Action Button */}
             <button

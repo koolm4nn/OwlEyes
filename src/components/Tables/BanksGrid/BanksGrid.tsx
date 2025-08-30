@@ -1,12 +1,12 @@
-import BankCard from "@/components/BankCard";
+import BankCard from "@/components/Cards/BankCard";
 import { useDeleteBank } from "@/hooks/useBank";
-import { BankIncludingAccounts } from "@/types";
+import { BankWithAccounts } from "@/types";
 import { useState } from "react";
 
 
-export function BanksTable({ banks }: {banks: BankIncludingAccounts[]}){
-    const [bankToDelete, setBankToDelete] = useState<BankIncludingAccounts | null>(null);
-    const [selectedBank, setSelectedBank] = useState<BankIncludingAccounts | null>(null);
+export function BanksGrid({ banks }: {banks: BankWithAccounts[]}){
+    const [bankToDelete, setBankToDelete] = useState<BankWithAccounts | null>(null);
+    const [selectedBank, setSelectedBank] = useState<BankWithAccounts | null>(null);
 
     const { mutate: deleteBank, isPending, isError, error } = useDeleteBank({
         onSuccess: () => {
