@@ -4,7 +4,7 @@ import { AddBankDesktop } from "@/components/Forms/Wrapper/AddBankDesktop";
 import { AddBankModal } from "@/components/Forms/Wrapper/AddBankModal";
 import { BanksGrid } from "@/components/Tables/BanksGrid/BanksGrid";
 import { useBanksWithAccounts } from "@/hooks/useBankWithAccount";
-import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { PlusIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 
 /**

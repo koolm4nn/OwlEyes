@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import ServiceContainer from "@/services/serviceContainer";
 
 /**
@@ -33,6 +33,6 @@ export async function DELETE(req: Request, context: { params : Promise<{ id: str
         const result = accountService.delete(accountId);
         return NextResponse.json({ success: result });
     } catch(err){
-        return NextResponse.json({error: "Internal server error: failed to delete account."}, {status: 500});
+        return NextResponse.json({error: "Internal server error: failed to delete account. ", err}, {status: 500});
     }
 }

@@ -1,4 +1,4 @@
-import { Account, AccountWithBank } from "@/types";
+import { AccountWithBank } from "@/types";
 /**
  * API layer exposing REST calls for accounts.
  */

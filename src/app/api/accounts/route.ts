@@ -26,7 +26,7 @@ export async function GET(): Promise<NextResponse>{
         const all = accountService.findAll();
         return NextResponse.json(all);
     } catch(err){
-        return NextResponse.json({error: "Internal Server Error: Failed to retrieve accounts"}, {status: 500});
+        return NextResponse.json({error: "Internal Server Error: Failed to retrieve accounts, " + err}, {status: 500});
     }
 }
 

@@ -25,6 +25,6 @@ export async function GET(): Promise<NextResponse>{
         const all = bankService.findAllIncludingAccounts();
         return NextResponse.json(all);
     } catch(err){
-        return NextResponse.json({error: "Internal server error: failed to retrieve banks including accounts."}, {status: 500});
+        return NextResponse.json({error: "Internal server error: failed to retrieve banks with accounts. ", err}, {status: 500});
     }
 }

@@ -4,25 +4,7 @@ import { useBalances } from '@/hooks/useBalance';
 import { BalanceWithMetaData } from '@/types';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import {LineChart} from '@mui/x-charts/LineChart';
-import { group } from 'console';
-//import { Console } from 'console';
-import Image from "next/image";
 import { useState } from 'react';
-
-interface ChartEntity {
-  date: string[],
-  data: (number)[],
-  currency: string,
-  title: string
-};
-
-type BankAccountSeries = {
-  key: string;           // e.g. "bnz", "apo"
-  label: string;         // e.g. "BNZ", "ApoBank"
-  currency: string;      // e.g. "NZD", "EUR"
-  data: { date: string; value: number }[]; // use ISO strings
-};
-
 
 function groupBalances(balances: BalanceWithMetaData[]){
   // Get unique dates. To be comparable, balances need to be mapped to these dates

@@ -25,7 +25,7 @@ export async function GET(): Promise<NextResponse>{
         const all = balanceService.findAll();
         return NextResponse.json(all);
     } catch(err){
-        return NextResponse.json({error: "Internal Server Error: Failed to retrieve balances"}, {status: 500});
+        return NextResponse.json({error: "Internal Server Error: Failed to retrieve balances. ", err}, {status: 500});
     }
 }
 
@@ -62,7 +62,6 @@ export async function POST(req: Request): Promise<NextResponse<{insertedId?: num
         const result = balanceService.create(amount, accountId, timestamp);
         return NextResponse.json({ insertedId: result})
     } catch(err){
-        console.error("POST balance error: " + err);
-        return NextResponse.json({error: "Internal Server Error"}, {status: 500});
+        return NextResponse.json({error: "Internal Server Error. ", err}, {status: 500});
     }
 }
