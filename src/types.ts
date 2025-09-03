@@ -90,3 +90,17 @@ export interface BalanceWithMetaData {
     bankId: number,
     bankName: string
 }
+
+export interface AccountSummary {
+    id: number,
+    name: string,
+    balance: number,
+    trend: number
+}
+
+export interface BankSummary {
+    id: number,
+    name: string,
+    balance: number,
+    accounts: AccountSummary[]
+}

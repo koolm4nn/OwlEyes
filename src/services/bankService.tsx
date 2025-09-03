@@ -1,6 +1,6 @@
 import { BankRepository } from "@/repositories/bankRepository";
 import { BaseService } from "./baseService";
-import { Bank, BankWithAccounts } from "@/types";
+import { AccountSummary, Bank, BankSummary, BankWithAccounts } from "@/types";
 import { AccountRepository } from "@/repositories/accountRepository";
 import { BalanceRepository } from "@/repositories/balanceRepository";
 
@@ -48,6 +48,64 @@ export class BankService extends BaseService<BankRepository>{
                 balance: bankBalances.pop()?.amount ?? 0
             }
         })
+    }
+
+
+    /**
+     * {
+     *  bankid: 0
+     *  bank: name
+     *  trend: -x / 0 / +x
+     *  accounts: [{
+     *      id: 1
+     *      balance: 123
+     *      trend: -x / 0 / +x
+     * }]
+     * } 
+     * 
+     */
+    findAllSummaries(): BankSummary[]{
+        const banks = this.findAll();
+        const accounts = this.accountRepo.findAll();
+        const balances = this.balanceRepo.findAll();
+
+        const result = [];
+
+        for(let idx = 0; idx < banks.length; idx++){
+            const bank = banks[idx];
+            const bankAccounts = accounts.filter(acc => acc.bankId == bank.id);
+
+            const bankSummary: BankSummary = {
+                id: idx,
+                name: bank.name,
+                balance: 0,
+                accounts: []
+            }
+
+            const accs = [];
+            for(let jdx = 0; jdx < bankAccounts.length; jdx++){
+                const accountsBalances = balances.filter(blc => blc.accountId === bankAccounts[jdx].id).sort((b1, b2) => b1.timestamp - b2.timestamp);
+
+                accs.push({
+                    id: bankAccounts[jdx].id,
+                    balance: accountsBalances.length > 0? (accountsBalances.at(-1)?.amount ?? 0) : 0,
+                    trend: accountsBalances.length >= 2 ? 
+                        (accountsBalances.at(-1)?.amount ?? 0) - (accountsBalances.at(-2)?.amount ?? 0) : 
+                        accountsBalances.length > 0? (accountsBalances.at(-1)?.amount ?? 0) : 0
+                } as AccountSummary)
+            }
+
+            bankSummary.accounts = accs;
+
+            bankSummary.balance = accs.reduce((acc, curr) => {
+                acc += curr.balance;
+                return acc;
+            }, 0)
+
+            result.push(bankSummary);
+        }
+
+        return result;
     }
 
     /**

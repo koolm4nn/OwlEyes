@@ -1,7 +1,9 @@
 "use client";
 
+import BankSummaryCircle from '@/components/BankSummaryCircle';
 import { useBalances } from '@/hooks/useBalance';
-import { BalanceWithMetaData } from '@/types';
+import { useBankSummary } from '@/hooks/useBankSummaries';
+import { BalanceWithMetaData, BankSummary } from '@/types';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import {LineChart} from '@mui/x-charts/LineChart';
 import { useState } from 'react';
@@ -56,13 +58,15 @@ const Chart = ({ data } : {data: BalanceWithMetaData[]}) => {
 
 export default function Home() {
   const {data: balances = [], isLoading, error } = useBalances();
-
+  const { data: banks, isLoading: isLoadingSummary } = useBankSummary();
   // Filters
   const [selectedYear, setSelectedYear] = useState<number | "all">("all");
   const [selectedMonth, setSelectedMonth] = useState<number | "all">("all");
   const [selectedAccount, setSelectedAccount] = useState<number | "all">("all");
 
+  //console.log(banks);
 
+  if(isLoadingSummary) return (<p>Is loading summary</p>);
   if(isLoading) return (<p>Loading</p>);
   if(error) return (<p>Error loading.</p>);
 
@@ -97,8 +101,19 @@ export default function Home() {
 
 
   return (
+
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-6 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start w-full">
+        <div className='flex flex-row gap-2'>
+        {banks.map((bank: BankSummary) => (
+          (
+          <div key={bank.id} className=''>
+            <BankSummaryCircle bank={bank} />
+          </div>
+          )
+        ))}
+        </div>
+
         <Chart data={filteredBalances} />
       </main>
       <div className='flex flex-item'>

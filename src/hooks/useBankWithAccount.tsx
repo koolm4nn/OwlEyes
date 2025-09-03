@@ -4,7 +4,6 @@ import { BankWithAccounts } from "@/types";
 
 
 async function fetchBanksDetails(): Promise<BankWithAccounts[]> {
-    console.log("Fetching.");
     const res = await fetch("api/banks/with-accounts");
     if(!res.ok) throw new Error("Failed to fetch banks with details.");
     return res.json();
