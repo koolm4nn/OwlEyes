@@ -8,6 +8,20 @@ import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import {LineChart} from '@mui/x-charts/LineChart';
 import { useState } from 'react';
 
+import {
+  LineChart as RechartsLineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  ReferenceLine,
+  ReferenceArea,
+} from "recharts";
+
+
 function groupBalances(balances: BalanceWithMetaData[]){
   // Get unique dates. To be comparable, balances need to be mapped to these dates
   const dates =  Array.from(
@@ -45,8 +59,10 @@ function groupBalances(balances: BalanceWithMetaData[]){
 const Chart = ({ data } : {data: BalanceWithMetaData[]}) => {
   const { dates, series } = groupBalances(data);
 
+  console.log(series);
+
     return (
-      <div className='bg-cyan-500 w-full'>
+      <div className='w-full'>
         <LineChart
           xAxis={[{ data: dates, scaleType: 'point' }]}
           series={series}
@@ -54,6 +70,53 @@ const Chart = ({ data } : {data: BalanceWithMetaData[]}) => {
         />
       </div>
     )
+}
+
+export function Rechart(){
+  // Generate a fixed timeline (e.g. Jan–Dec 2025)
+  const allDates = Array.from({ length: 12 }, (_, i) => `2025-${String(i + 1).padStart(2, "0")}-01`);
+
+  // Example balances for two accounts with gaps in the data
+  const accountAData = [
+    { date: "2025-01-01", amount: -100 },
+    { date: "2025-03-02", amount: 150 },
+    { date: "2025-06-01", amount: 200 },
+  ];
+
+  const accountBData = [
+    { date: "2025-02-01", amount: 80 },
+    { date: "2025-05-01", amount: 60 },
+    { date: "2025-09-01", amount: 120 },
+  ];
+
+  // Merge into fixed timeline with nulls for missing dates
+  const mergedData = allDates.map(date => {
+    const accA = accountAData.find(d => d.date === date);
+    const accB = accountBData.find(d => d.date === date);
+    return {
+      date,
+      accountA: accA ? accA.amount : null,
+      accountB: accB ? accB.amount : null,
+    };
+  })
+
+  console.log(mergedData);
+
+  return (
+    <ResponsiveContainer className='bg-stone-600' width="100%" height={400}>
+      <RechartsLineChart data={mergedData}>
+        <CartesianGrid strokeDasharray="5 5" />
+        <XAxis dataKey="date" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <ReferenceArea y1={-100} y2={0} fill="red" fillOpacity={0.1} />
+        <ReferenceLine y={0} stroke="#e1e1e1ff" strokeWidth={1.5} />
+        <Line type="linear" dataKey="accountA" stroke="#8884d8" connectNulls />
+        <Line type="linear" dataKey="accountB" stroke="#82ca9d" connectNulls />
+      </RechartsLineChart>
+    </ResponsiveContainer>
+  );
 }
 
 export default function Home() {
@@ -97,14 +160,13 @@ export default function Home() {
   ]
 
   // Process data
-// Call chart with data
-
+  // Call chart with data
 
   return (
 
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-6 sm:p-20">
+    <div className="font-sans grid grid-rows items-center justify-items-center md:px-6 py-2 md:py-6">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start w-full">
-        <div className='flex flex-row gap-2'>
+        <div className='grid grid-cols-2 md:grid-cols-6 gap-2 md:gap-6'>
         {banks.map((bank: BankSummary) => (
           (
           <div key={bank.id} className=''>
@@ -115,7 +177,7 @@ export default function Home() {
         </div>
 
         <Chart data={filteredBalances} />
-      </main>
+        <Rechart />
       <div className='flex flex-item'>
         <FormControl>
             <InputLabel>Year</InputLabel>
@@ -131,7 +193,8 @@ export default function Home() {
               {months.map(m => <MenuItem key={m.key} disabled={m.key > new Date().getMonth()} value={m.key}>{m.label}</MenuItem>)}
             </Select>
         </FormControl>
-      </div>  
+      </div> 
+      </main> 
     </div>
   );
 }
