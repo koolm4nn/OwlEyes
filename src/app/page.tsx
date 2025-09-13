@@ -1,6 +1,7 @@
 "use client";
 
 import BankSummaryCircle from '@/components/BankSummaryCircle';
+import { useAccountWithBalances } from '@/hooks/useAccountWithBalances';
 import { useBalances } from '@/hooks/useBalance';
 import { useBankSummary } from '@/hooks/useBankSummaries';
 import { BalanceWithMetaData, BankSummary } from '@/types';
@@ -53,6 +54,8 @@ function groupBalances(balances: BalanceWithMetaData[]){
     curve: "linear" as const
   }));
 
+  console.log(series);
+
   return { dates, series };
 }
 
@@ -78,16 +81,24 @@ export function Rechart(){
 
   // Example balances for two accounts with gaps in the data
   const accountAData = [
-    { date: "2025-01-01", amount: -100 },
-    { date: "2025-03-02", amount: 150 },
-    { date: "2025-06-01", amount: 200 },
+    { date: "2025-01-15", amount: -100 },
+    { date: "2025-03-03", amount: 150 },
+    { date: "2025-06-07", amount: 200 },
   ];
 
   const accountBData = [
     { date: "2025-02-01", amount: 80 },
-    { date: "2025-05-01", amount: 60 },
-    { date: "2025-09-01", amount: 120 },
+    { date: "2025-05-02", amount: 60 },
+    { date: "2025-09-03", amount: 120 },
   ];
+
+  // convert to timestamps
+  const parseDate = (d: string) => new Date(d).getTime();
+
+  const allData = [
+    ...accountAData.map(d => ({ date: parseDate(d.date), accountA: d.amount})),
+    ...accountBData.map(d => ({ date: parseDate(d.date), accountB: d.amount}))
+  ]
 
   // Merge into fixed timeline with nulls for missing dates
   const mergedData = allDates.map(date => {
@@ -104,11 +115,19 @@ export function Rechart(){
 
   return (
     <ResponsiveContainer className='bg-stone-600' width="100%" height={400}>
-      <RechartsLineChart data={mergedData}>
+      <RechartsLineChart data={allData}>
         <CartesianGrid strokeDasharray="5 5" />
-        <XAxis dataKey="date" />
+        <XAxis 
+          dataKey="date" 
+          type='number'
+          domain={[parseDate("2025-01-01"), parseDate("2025-12-31")]}
+          tickFormatter={(ts) => new Date(ts).toLocaleDateString("en-NZ", {month: "short"})}
+          
+          />
         <YAxis />
-        <Tooltip />
+        <Tooltip 
+          labelFormatter={(ts) => new Date(ts).toLocaleDateString("en-NZ", {day: "numeric", month: "short"})}
+        />
         <Legend />
         <ReferenceArea y1={-100} y2={0} fill="red" fillOpacity={0.1} />
         <ReferenceLine y={0} stroke="#e1e1e1ff" strokeWidth={1.5} />
@@ -122,6 +141,7 @@ export function Rechart(){
 export default function Home() {
   const {data: balances = [], isLoading, error } = useBalances();
   const { data: banks, isLoading: isLoadingSummary } = useBankSummary();
+  const { data: accountsWithBalances, isLoading: isLoadingAccounts } = useAccountWithBalances();
   // Filters
   const [selectedYear, setSelectedYear] = useState<number | "all">("all");
   const [selectedMonth, setSelectedMonth] = useState<number | "all">("all");
