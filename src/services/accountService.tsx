@@ -1,6 +1,7 @@
 import { AccountRepository } from "@/repositories/accountRepository";
 import { BaseService } from "./baseService";
-import { AccountWithBank } from "@/types";
+import { AccountWithBalances, AccountWithBank, Balance } from "@/types";
+import ServiceContainer from "./serviceContainer";
 
 /**
  * Service layer for handling business logic related to accounts.
@@ -35,6 +36,27 @@ export class AccountService extends BaseService<AccountRepository>{
      */
     delete(id: number): boolean {
         return this.repo.delete(id);
+    }
+
+    /**
+     * Retrieves all accounts with their balances
+     * 
+     * @returns {AccountWithBalances[]} - Accounts with their associated balances
+     */
+    findAllWithBalances(): AccountWithBalances[]{
+        const balances = ServiceContainer.balanceService.findAll();
+        const accounts = ServiceContainer.accountService.findAll();
+
+        const result = [] as AccountWithBalances[];
+
+        accounts.forEach(acc => {
+            result.push({
+                account: acc,
+                balances: balances.filter(b => b.accountId === acc.id).map(b => b as Balance)
+            } as AccountWithBalances)
+        })
+
+        return result;
     }
 
     // update
