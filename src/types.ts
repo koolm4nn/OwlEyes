@@ -104,3 +104,8 @@ export interface BankSummary {
     balance: number,
     accounts: AccountSummary[]
 }
+
+export interface AccountWithBalances {
+    account: AccountWithBank,
+    balances: Balance[]
+}
