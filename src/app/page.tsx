@@ -4,7 +4,7 @@ import BankSummaryCircle from '@/components/BankSummaryCircle';
 import { useAccountWithBalances } from '@/hooks/useAccountWithBalances';
 import { useBalances } from '@/hooks/useBalance';
 import { useBankSummary } from '@/hooks/useBankSummaries';
-import { BalanceWithMetaData, BankSummary } from '@/types';
+import { AccountWithBalances, BalanceWithMetaData, BankSummary } from '@/types';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import {LineChart} from '@mui/x-charts/LineChart';
 import { useState } from 'react';
@@ -74,53 +74,53 @@ const Chart = ({ data } : {data: BalanceWithMetaData[]}) => {
       </div>
     )
 }
+function normalizeTs(ts: number) {
+  // If clearly in seconds (around 1e9..1e10), convert to ms
+  return ts < 1e12 ? ts * 1000 : ts;
+}
 
-export function Rechart(){
-  // Generate a fixed timeline (e.g. Jan–Dec 2025)
-  const allDates = Array.from({ length: 12 }, (_, i) => `2025-${String(i + 1).padStart(2, "0")}-01`);
+export function Rechart({ data }: {data: AccountWithBalances[]}){
+// Build rows keyed by timestamp (ms)
+  const rowsMap = new Map<number, Record<string, any>>();
 
-  // Example balances for two accounts with gaps in the data
-  const accountAData = [
-    { date: "2025-01-15", amount: -100 },
-    { date: "2025-03-03", amount: 150 },
-    { date: "2025-06-07", amount: 200 },
-  ];
+  data.forEach((acc) => {
+    const accountName = acc.account.name;
+    acc.balances.forEach((b) => {
+      const dateMs = normalizeTs(b.timestamp); // ensure ms
+      let row = rowsMap.get(dateMs);
+      if (!row) {
+        row = { date: dateMs };
+        rowsMap.set(dateMs, row);
+      }
+      // Add accounts value
+      row[accountName] = b.amount;
+    });
+  });
 
-  const accountBData = [
-    { date: "2025-02-01", amount: 80 },
-    { date: "2025-05-02", amount: 60 },
-    { date: "2025-09-03", amount: 120 },
-  ];
+  // Sort rows
+  const rows = Array.from(rowsMap.values()).sort((a, b) => a.date - b.date);
 
-  // convert to timestamps
-  const parseDate = (d: string) => new Date(d).getTime();
+  // Get account keys
+  const accountKeys = [...new Set(data.map(d => d.account.name))];
 
-  const allData = [
-    ...accountAData.map(d => ({ date: parseDate(d.date), accountA: d.amount})),
-    ...accountBData.map(d => ({ date: parseDate(d.date), accountB: d.amount}))
-  ]
+  // Every row should has every account key (missing to null)
+  rows.forEach(row => {
+    accountKeys.forEach(k => {
+      if (!(k in row)) row[k] = null;
+    });
+  });
 
-  // Merge into fixed timeline with nulls for missing dates
-  const mergedData = allDates.map(date => {
-    const accA = accountAData.find(d => d.date === date);
-    const accB = accountBData.find(d => d.date === date);
-    return {
-      date,
-      accountA: accA ? accA.amount : null,
-      accountB: accB ? accB.amount : null,
-    };
-  })
-
-  console.log(mergedData);
+  // Optional: colors for lines
+  const colors = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f50", "#6a5acd"];
 
   return (
     <ResponsiveContainer className='bg-stone-600' width="100%" height={400}>
-      <RechartsLineChart data={allData}>
+      <RechartsLineChart data={rows}>
         <CartesianGrid strokeDasharray="5 5" />
         <XAxis 
           dataKey="date" 
           type='number'
-          domain={[parseDate("2025-01-01"), parseDate("2025-12-31")]}
+          domain={['dataMin', 'dataMax']}
           tickFormatter={(ts) => new Date(ts).toLocaleDateString("en-NZ", {month: "short"})}
           
           />
@@ -131,8 +131,16 @@ export function Rechart(){
         <Legend />
         <ReferenceArea y1={-100} y2={0} fill="red" fillOpacity={0.1} />
         <ReferenceLine y={0} stroke="#e1e1e1ff" strokeWidth={1.5} />
-        <Line type="linear" dataKey="accountA" stroke="#8884d8" connectNulls />
-        <Line type="linear" dataKey="accountB" stroke="#82ca9d" connectNulls />
+        {
+          accountKeys.map((key, i) => (
+              <Line 
+                key={key}
+                type="linear"
+                dataKey={key}
+                stroke={["#8884d8", "#82ca9d", "#ffc658"][i % 3]}
+              />)
+          )
+        }
       </RechartsLineChart>
     </ResponsiveContainer>
   );
@@ -197,7 +205,7 @@ export default function Home() {
         </div>
 
         <Chart data={filteredBalances} />
-        <Rechart />
+        <Rechart data={accountsWithBalances} />
       <div className='flex flex-item'>
         <FormControl>
             <InputLabel>Year</InputLabel>
